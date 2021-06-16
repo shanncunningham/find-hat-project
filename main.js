@@ -80,13 +80,30 @@ class Field {
       console.log(displayArray.join('\n'));
     }
 
+    //generate a random game field 
+    static generateField(height, width) {
+        const newField = new Array(height).fill(0).map(el => new Array(width));
+        for(let y = 0; y < height; y++){
+            for(let x = 0; x < width; x++){
+                const prob = Math.random();
+                newField[y][x] = prob > .2 ? fieldCharacter : hole;
+            }
+        }
 
-    
+        //Set the "hat" location
+        const hatLocation = {
+            x: Math.floor(Math.random() * width),
+            y: Math.floor(Math.random() * height)
+        };
+        // Make sure the "hat" is not at the starting point
+        while (hatLocation.x === 0 && hatLocation.y === 0) {
+            hatLocation.x = Math.floor(Math.random() * width);
+            hatLocation.y = Math.floor(Math.random() * height);
+        }
+        newField[hatLocation.y][hatLocation.x] = hat;
+        return newField;
+    }
   }
   
-  const myField = new Field([
-    ['*', '░', 'O'],
-    ['░', 'O', '░'],
-    ['░', '^', '░'],
-  ]);
-  myField.runGame();
+  const myfield = new Field(Field.generateField(10, 10));
+  myfield.runGame();
